@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Stock Data</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #333; }
+        .stock-container { margin-bottom: 40px; }
+        .stock-title { font-size: 1.5em; color: #0056b3; border-bottom: 2px solid #0056b3; padding-bottom: 5px; }
+        .data-source { font-style: italic; color: #666; margin-top: 5px; }
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
+        tr:nth-child(even) { background-color: #f9f9f9; }
+    </style>
+</head>
+<body>
+
+    <h1>Indian Stock Market Data</h1>
+
+    {% for ticker, info in stock_data.items() %}
+        <div class="stock-container">
+            <h2 class="stock-title">{{ ticker }}</h2>
+            <p class="data-source">Data fetched from: <strong>{{ info.source }}</strong></p>
+            {% if info.data %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Open</th>
+                            <th>High</th>
+                            <th>Low</th>
+                            <th>Close</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for record in info.data %}
+                        <tr>
+                            <td>{{ record.Date }}</td>
+                            <td>{{ "%.2f"|format(record.Open) }}</td>
+                            <td>{{ "%.2f"|format(record.High) }}</td>
+                            <td>{{ "%.2f"|format(record.Low) }}</td>
+                            <td>{{ "%.2f"|format(record.Close) }}</td>
+                            <td>{{ record.Volume }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No data available for this ticker.</p>
+            {% endif %}
+        </div>
+    {% endfor %}
+
+</body>
+</html>
